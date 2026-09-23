@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>David Solanillas — Robotics simulation, contact & multibody dynamics</title>
+<meta name="description" content="Final-year PhD researcher at McGill University working on contact and friction modelling for robot simulation and learning.">
+<meta property="og:title" content="David Solanillas">
+<meta property="og:description" content="PhD researcher at McGill · Contact modelling, multibody dynamics and robot simulation.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#101a2c">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#101a2c;        /* deep engineering blue */
+  --ink-2:#17243b;
+  --line:#2a3a55;
+  --paper:#e9eef3;      /* text */
+  --muted:#93a4b9;
+  --steel:#6fb3c8;      /* bodies */
+  --contact:#ffb547;    /* contact points / accent */
+  --maxw:760px;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:var(--ink)}
+body{
+  margin:0;background:var(--ink);color:var(--paper);
+  font-family:"Archivo",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:17px;line-height:1.6;font-variation-settings:"wdth" 100;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--paper);text-decoration-color:var(--steel);text-underline-offset:3px}
+a:hover{color:var(--contact);text-decoration-color:var(--contact)}
+:focus-visible{outline:2px solid var(--contact);outline-offset:3px;border-radius:4px}
+img,video{max-width:100%;display:block}
+
+/* ---------- Hero with live simulation ---------- */
+.hero{position:relative;height:min(96svh,820px);min-height:640px;overflow:hidden;
+  background:
+    linear-gradient(var(--ink) 0 0) padding-box,
+    var(--ink);
+}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:pan-y;cursor:crosshair}
+.hero-text{position:relative;z-index:2;max-width:var(--maxw);margin:0 auto;padding:56px 22px 0;pointer-events:none}
+.hero-text a,.hero-text button{pointer-events:auto}
+h1{
+  margin:0;font-size:clamp(46px,13vw,104px);line-height:.88;letter-spacing:-.02em;
+  font-weight:800;font-variation-settings:"wdth" 125;
+}
+h1 span{display:block;font-weight:300;font-variation-settings:"wdth" 62;letter-spacing:0}
+.role{margin:22px 0 0;max-width:30ch;font-size:clamp(18px,4.6vw,22px);line-height:1.35;color:var(--paper)}
+.role small{display:block;color:var(--muted);font-size:15px;margin-top:6px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:999px;
+  font:600 15px/1 "Archivo",sans-serif;text-decoration:none;border:1.5px solid var(--line);
+  background:rgba(16,26,44,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);color:var(--paper)
+}
+.btn.primary{background:var(--contact);border-color:var(--contact);color:#1a1204}
+.btn.primary:hover{color:#1a1204;filter:brightness(1.08)}
+.btn:hover{border-color:var(--contact)}
+.sim-note{margin:22px 0 0;max-width:40ch;font-size:13.5px;line-height:1.45;color:var(--muted)}
+.sim-note b{color:var(--contact);font-weight:600}
+
+/* ---------- Layout ---------- */
+main{max-width:var(--maxw);margin:0 auto;padding:0 22px 40px}
+section{padding-top:64px}
+h2{margin:0 0 20px;font-size:30px;line-height:1.1;font-weight:700;font-variation-settings:"wdth" 112;letter-spacing:-.01em}
+h3{margin:0 0 6px;font-size:20px;line-height:1.25;font-weight:650;font-variation-settings:"wdth" 100}
+p{margin:0 0 14px;max-width:68ch}
+.muted{color:var(--muted)}
+
+/* IROS strip — the one thing a recruiter needs first */
+.iros{
+  margin-top:-1px;border-top:3px solid var(--contact);background:var(--ink-2);
+}
+.iros .wrap{max-width:var(--maxw);margin:0 auto;padding:26px 22px 28px}
+.iros h2{font-size:24px;margin-bottom:10px}
+.iros p{color:#cdd7e2}
+.iros .when{color:var(--contact);font-weight:600}
+
+/* Research */
+.project{padding:26px 0;border-top:1px solid var(--line)}
+.project:first-of-type{border-top:0;padding-top:0}
+.media{
+  position:relative;aspect-ratio:16/9;border-radius:10px;overflow:hidden;margin:0 0 16px;
+  background:
+    repeating-linear-gradient(0deg,transparent 0 23px,rgba(111,179,200,.08) 23px 24px),
+    repeating-linear-gradient(90deg,transparent 0 23px,rgba(111,179,200,.08) 23px 24px),
+    var(--ink-2);
+  border:1px solid var(--line);display:grid;place-items:center;color:var(--muted);font-size:14px
+}
+.media video{width:100%;height:100%;object-fit:cover}
+.venue{display:inline-block;margin-top:4px;font-size:14px;color:var(--contact);font-weight:600}
+
+/* Publications */
+.pubs{list-style:none;margin:0;padding:0}
+.pubs li{padding:14px 0;border-top:1px solid var(--line)}
+.pubs li:first-child{border-top:0;padding-top:0}
+.pubs .t{font-weight:600;display:block}
+.pubs .a,.pubs .v{font-size:15px;color:var(--muted)}
+.pubs .a b{color:var(--paper);font-weight:600}
+.pubs .v i{color:var(--paper)}
+
+/* Timeline (a real sequence, so years are the markers) */
+.tl{list-style:none;margin:0;padding:0;border-left:2px solid var(--line)}
+.tl li{position:relative;padding:0 0 26px 22px}
+.tl li::before{content:"";position:absolute;left:-7px;top:7px;width:12px;height:12px;border-radius:50%;
+  background:var(--ink);border:2px solid var(--steel)}
+.tl li.now::before{background:var(--contact);border-color:var(--contact)}
+.tl .yr{font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.tl p{font-size:16px;color:#cdd7e2;margin:4px 0 0}
+
+/* Talks */
+.talks{list-style:none;margin:0;padding:0}
+.talks li{display:grid;grid-template-columns:5.2em 1fr;gap:12px;padding:10px 0;border-top:1px solid var(--line);font-size:15.5px}
+.talks li:first-child{border-top:0}
+.talks .d{color:var(--muted);font-variant-numeric:tabular-nums}
+.talks .up{color:var(--contact);font-weight:600}
+details{margin-top:8px}
+summary{cursor:pointer;color:var(--steel);font-weight:600;padding:8px 0;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"+ ";}
+details[open] summary::before{content:"− ";}
+
+/* Two-column facts */
+.facts{display:grid;gap:28px}
+@media (min-width:700px){.facts{grid-template-columns:1fr 1fr}}
+.facts ul{margin:0;padding-left:18px}
+.facts li{margin-bottom:8px;font-size:16px}
+.skill{margin-bottom:12px;font-size:16px}
+.skill b{display:block;font-weight:650}
+.skill span{color:#cdd7e2}
+
+footer{max-width:var(--maxw);margin:0 auto;padding:40px 22px 48px;border-top:1px solid var(--line);color:var(--muted);font-size:15px}
+footer .actions{margin-top:14px}
+
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="hero" id="top">
+  <canvas id="sim" aria-hidden="true"></canvas>
+  <div class="hero-text">
+    <h1>David<span>Solanillas</span></h1>
+    <p class="role">I model contact and friction so that robots learn the right thing in simulation.
+      <small>Final-year PhD, Applied Dynamics Lab, McGill University</small></p>
+    <div class="actions">
+      <!-- Put your CV in the repo as cv.pdf -->
+      <a class="btn primary" href="cv.pdf" download>Download CV</a>
+      <a class="btn" href="mailto:david.solanillas@mail.mcgill.ca">Email</a>
+      <!-- TODO: replace # with your real profile links -->
+      <a class="btn" href="#" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn" href="#" target="_blank" rel="noopener">ORCID</a>
+    </div>
+    <p class="sim-note">A toy position-based dynamics simulation running in your browser. <b>Amber dots</b> are active contacts. Tap to disturb the blocks.</p>
+  </div>
+</header>
+
+<div class="iros" id="iros">
+  <div class="wrap">
+    <h2>Meeting me at IROS 2026?</h2>
+    <p><span class="when">Pittsburgh, Sep 27 – Oct 1.</span> I’m presenting the poster <i>Contact Modelling Still Matters for Learning-Based Manipulation</i> at the Workshop on Contact &amp; Learning. I’m finishing my PhD and open to research and engineering roles in robot simulation, physics engines and sim-to-real.</p>
+    <div class="actions">
+      <a class="btn primary" href="cv.pdf" download>Download CV</a>
+      <a class="btn" href="mailto:david.solanillas@mail.mcgill.ca?subject=Met%20at%20IROS%202026">Email me</a>
+    </div>
+  </div>
+</div>
+
+<main>
+
+<section id="about">
+  <h2>About</h2>
+  <p>I work on multibody systems with unilateral contact and friction, applied to robotics. I have four first-author journal papers (IEEE RA-L, Mechanism and Machine Theory, ASME Journal of Applied Mechanics), and I’ve implemented and validated position-based dynamics algorithms in C++ inside CM Labs’ Vortex, a commercial simulation engine.</p>
+  <p>Right now I’m studying how the fidelity of the contact model limits what robot policies can learn in simulation.</p>
+</section>
+
+<section id="research">
+  <h2>Research</h2>
+
+  <article class="project">
+    <div class="media">
+      <!-- Replace this line with: <video src="videos/contact.mp4" autoplay muted loop playsinline></video> -->
+      Video coming soon
+    </div>
+    <h3>Contact models and robot learning</h3>
+    <p>I benchmarked our LCP-based bristle-friction models against MuJoCo on grasping and non-prehensile manipulation. Relaxed complementarity in convex models doesn’t capture stick-slip transitions or true sticking. A published sim-to-real benchmark had to add a virtual wall to make one task trainable; our model reproduces it with friction alone.</p>
+    <span class="venue">RoboSim 2026 · IROS 2026 Workshop on Contact &amp; Learning</span>
+  </article>
+
+  <article class="project">
+    <div class="media">
+      <!-- <video src="videos/point-mass.mp4" autoplay muted loop playsinline></video> -->
+      Video coming soon
+    </div>
+    <h3>Rigid bodies as four point masses</h3>
+    <p>Each link is modelled by four point masses. The mass matrix becomes constant, the nonlinear inertial terms disappear, and constraint Jacobians are linear in the generalized coordinates. For differentiable physics, the expensive terms vanish or can be precomputed: ∂M/∂q = 0, ∂c/∂q = 0, and constant Hessians for the constraint Jacobians.</p>
+    <span class="venue">ASME J. Applied Mechanics 2025 · Mechanism and Machine Theory 2024, 2025</span>
+  </article>
+
+  <article class="project">
+    <div class="media">
+      <!-- <video src="videos/coriolis.mp4" autoplay muted loop playsinline></video> -->
+      Video coming soon
+    </div>
+    <h3>A new way to compute the Coriolis/centrifugal matrix</h3>
+    <p>A method for computing the Coriolis/centrifugal matrix of open- and closed-loop manipulators.</p>
+    <span class="venue">IEEE Robotics and Automation Letters, 2026</span>
+  </article>
+</section>
+
+<section id="publications">
+  <h2>Journal papers</h2>
+  <ul class="pubs">
+    <li><span class="t">A New Approach for the Computation of the Coriolis/Centrifugal Matrix</span>
+      <span class="a"><b>D. M. Solanillas Francés</b>, J. Kövecses</span><br>
+      <span class="v"><i>IEEE Robotics and Automation Letters</i> 11(10), 2026</span></li>
+    <li><span class="t">Dynamics Representation of Mechanical Systems for Time-Stepping Problems</span>
+      <span class="a"><b>D. M. Solanillas Francés</b>, J. Kövecses</span><br>
+      <span class="v"><i>Mechanism and Machine Theory</i> 218, 2025</span></li>
+    <li><span class="t">A New Representation for the Dynamics of Rigid Bodies</span>
+      <span class="a"><b>D. M. Solanillas Francés</b>, J. Kövecses</span><br>
+      <span class="v"><i>ASME Journal of Applied Mechanics</i> 92(7), 2025</span></li>
+    <li><span class="t">A New Formulation for the Dynamics of Rigid Bodies with Unilateral Interactions</span>
+      <span class="a"><b>D. M. Solanillas Francés</b>, J. Kövecses</span><br>
+      <span class="v"><i>Mechanism and Machine Theory</i> 203, 2024</span></li>
+    <li><span class="t">Path Analysis for Hybrid Rigid-Flexible Mechanisms</span>
+      <span class="a">O. Altuzarra, <b>D. M. Solanillas</b>, E. Amezua, V. Petuya</span><br>
+      <span class="v"><i>Mathematics</i> 9(16), 2021</span></li>
+  </ul>
+</section>
+
+<section id="experience">
+  <h2>Experience</h2>
+  <ol class="tl" reversed>
+    <li class="now"><span class="yr">2025 – now</span>
+      <h3>Research collaboration, CM Labs Simulations (Vortex Studio)</h3>
+      <p>Implemented and validated position-based dynamics algorithms in C++ inside the Vortex production codebase.</p></li>
+    <li class="now"><span class="yr">2021 – now</span>
+      <h3>PhD researcher, Applied Dynamics Lab, McGill</h3>
+      <p>Supervised by Prof. József Kövecses. Dynamic formulations and time-stepping schemes for multibody systems with contact and friction, applied to robotic manipulators.</p></li>
+    <li><span class="yr">2020 – 2021</span>
+      <h3>Researcher, University of the Basque Country</h3>
+      <p>Modelled and validated compliant closed-loop manipulators; led to a journal paper.</p></li>
+    <li><span class="yr">2019 – 2020</span>
+      <h3>Researcher, Tekniker</h3>
+      <p>Finite element, experimental modal and thermal analysis of machine-tool electrospindles.</p></li>
+  </ol>
+</section>
+
+<section id="talks">
+  <h2>Talks and posters</h2>
+  <ul class="talks">
+    <li><span class="d up">Oct 2026</span><span>Workshop on Contact &amp; Learning, IROS, Pittsburgh (poster)</span></li>
+    <li><span class="d up">Oct 2026</span><span>Asian Conference on Multibody Dynamics, Okinawa</span></li>
+    <li><span class="d">Sep 2026</span><span>RoboSim Summit, London</span></li>
+    <li><span class="d">Jul 2026</span><span>WCCM–ECCOMAS Congress, Munich</span></li>
+    <li><span class="d">Jun 2026</span><span>Int. Conference on Multibody System Dynamics, Seville</span></li>
+  </ul>
+  <details>
+    <summary>Show 8 earlier talks</summary>
+    <ul class="talks">
+      <li><span class="d">Apr 2026</span><span>Contact Mechanics International Symposium, Lugano (poster)</span></li>
+      <li><span class="d">Oct 2025</span><span>ECCOMAS Particles, Barcelona</span></li>
+      <li><span class="d">Jul 2025</span><span>ECCOMAS Multibody, Innsbruck</span></li>
+      <li><span class="d">Jul 2025</span><span>ECCOMAS Computational Contact Mechanics, Munich</span></li>
+      <li><span class="d">Aug 2024</span><span>ASME IDETC/CIE, Washington DC</span></li>
+      <li><span class="d">Jul 2024</span><span>European Nonlinear Dynamics Conference, Delft</span></li>
+      <li><span class="d">Jun 2024</span><span>Mechanism and Machine Theory Symposium, Guimarães</span></li>
+      <li><span class="d">Jun 2024</span><span>Int. Conference on Multibody System Dynamics, Madison</span></li>
+    </ul>
+  </details>
+</section>
+
+<section id="skills">
+  <h2>Skills and background</h2>
+  <div class="facts">
+    <div>
+      <div class="skill"><b>C++</b><span>Position-based dynamics for CM Labs’ Vortex engine</span></div>
+      <div class="skill"><b>Python</b><span>MuJoCo benchmarking and contact-fidelity analysis</span></div>
+      <div class="skill"><b>MATLAB</b><span>Formulations and time-stepping schemes behind all my papers</span></div>
+      <div class="skill"><b>CUDA</b><span>NVIDIA DLI, Fundamentals of Accelerated Computing (2022)</span></div>
+      <div class="skill"><b>Methods</b><span>Non-smooth dynamics, LCP/MLCP and pivoting methods, bristle friction, convex relaxations of contact, differentiable physics</span></div>
+    </div>
+    <div>
+      <h3>Education</h3>
+      <ul>
+        <li>PhD Mechanical Engineering, McGill University, 2021 – now</li>
+        <li>MSc Mechanical Engineering, University of the Basque Country, 2020. Ranked 1st of 14.</li>
+        <li>BSc Mechanical Engineering, University of Zaragoza, 2018. Ranked 7th of 124, finished in 4 years against a 5.7-year average.</li>
+      </ul>
+      <h3 style="margin-top:20px">Awards</h3>
+      <ul>
+        <li>McGill Engineering Doctoral Award (MEDA International), 2021</li>
+        <li>McGill Graduate Excellence Award in Engineering, 2021 – 2025</li>
+        <li>Spanish Ministry of Education fellowship, 2014 – 2020</li>
+      </ul>
+      <p class="muted" style="font-size:15px;margin-top:16px">Spanish (native), English (professional), French (intermediate). Reviewer for Mechanism and Machine Theory.</p>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  Let’s talk about contact, simulation or sim-to-real.
+  <div class="actions">
+    <a class="btn primary" href="mailto:david.solanillas@mail.mcgill.ca">david.solanillas@mail.mcgill.ca</a>
+    <a class="btn" href="cv.pdf" download>Download CV</a>
+  </div>
+</footer>
+
+<script>
+/* Tiny 2D position-based dynamics: each block = 4 point masses + 6 distance constraints,
+   point-vs-polygon contacts with Coulomb-style friction. */
+(() => {
+  const cv = document.getElementById('sim'), ctx = cv.getContext('2d');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const G = 1800, SUB = 8, MU_S = 0.9, MU_K = 0.6, R = 3;
+  let W = 0, H = 0, dpr = 1, bodies = [], contacts = [], queue = [], running = true, last = 0;
+
+  function resize(){
+    const r = cv.getBoundingClientRect();
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = r.width; H = r.height;
+    cv.width = W * dpr; cv.height = H * dpr;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+
+  function makeBody(cx, cy, w, h, ang){
+    const c = Math.cos(ang), s = Math.sin(ang);
+    const loc = [[-w/2,-h/2],[w/2,-h/2],[w/2,h/2],[-w/2,h/2]];
+    const p = loc.map(([x,y]) => {
+      const X = cx + x*c - y*s, Y = cy + x*s + y*c;
+      return {x:X, y:Y, px:X, py:Y, vx:(Math.random()-.5)*60, vy:0};
+    });
+    const cons = [];
+    for (let i=0;i<4;i++) for (let j=i+1;j<4;j++)
+      cons.push([i,j,Math.hypot(p[i].x-p[j].x,p[i].y-p[j].y)]);
+    return {p, cons, hue: Math.random() < .18};
+  }
+
+  function seed(){
+    bodies = []; queue = [];
+    const n = Math.max(14, Math.min(26, Math.round(W/40)));
+    const sc = Math.max(1, Math.min(1.4, W/700));
+    for (let i=0;i<n;i++){
+      const w = (30 + Math.random()*36)*sc, h = (24 + Math.random()*30)*sc;
+      queue.push({t: 300 + i*180, w, h, x: W*0.08 + Math.random()*W*0.84, a: (Math.random()-.5)*1.2});
+    }
+  }
+
+  function inside(pt, b, margin=0){
+    // returns {d, i, t, sgn} of shallowest edge if pt is inside convex quad b, else null
+    const P = b.p, cx=(P[0].x+P[1].x+P[2].x+P[3].x)/4, cy=(P[0].y+P[1].y+P[2].y+P[3].y)/4;
+    let best = null;
+    for (let i=0;i<4;i++){
+      const a=P[i], q=P[(i+1)%4], ex=q.x-a.x, ey=q.y-a.y, L=Math.hypot(ex,ey)||1;
+      const nx=-ey/L, ny=ex/L;
+      const dc=(cx-a.x)*nx+(cy-a.y)*ny, sgn=dc>0?1:-1;
+      const d=((pt.x-a.x)*nx+(pt.y-a.y)*ny)*sgn + R + margin;
+      if (d <= 0) return null;
+      if (!best || d < best.d){
+        const t=Math.max(0,Math.min(1,((pt.x-a.x)*ex+(pt.y-a.y)*ey)/(L*L)));
+        best={d,i,t,nx:-nx*sgn,ny:-ny*sgn,ex:ex/L,ey:ey/L};
+      }
+    }
+    return best;
+  }
+
+  function step(dt){
+    const h = dt/SUB;
+    for (let s=0;s<SUB;s++){
+      for (const b of bodies) for (const p of b.p){
+        p.vy += G*h; p.vx*=0.9995; p.vy*=0.9995;
+        p.px=p.x; p.py=p.y; p.x+=p.vx*h; p.y+=p.vy*h;
+      }
+      for (const b of bodies) for (const [i,j,L] of b.cons){
+        const a=b.p[i], c=b.p[j], dx=c.x-a.x, dy=c.y-a.y, d=Math.hypot(dx,dy)||1, k=(d-L)/d*0.5;
+        a.x+=dx*k; a.y+=dy*k; c.x-=dx*k; c.y-=dy*k;
+      }
+      // walls + floor with friction
+      for (const b of bodies) for (const p of b.p){
+        if (p.y > H-R){
+          const pen=p.y-(H-R); p.y=H-R;
+          const tx=p.x-p.px;
+          if (Math.abs(tx) < MU_S*pen) p.x=p.px; else p.x-=tx*Math.min(MU_K*pen/Math.abs(tx),1);
+        }
+        if (p.x < R) p.x=R; if (p.x > W-R) p.x=W-R;
+      }
+      // body-body: each vertex vs every other block
+      for (let it=0;it<2;it++) for (let A=0;A<bodies.length;A++) for (let B=0;B<bodies.length;B++){
+        if (A===B) continue;
+        const bb=bodies[B];
+        for (const p of bodies[A].p){
+          const c = inside(p, bb); if (!c) continue;
+          const a=bb.p[c.i], q=bb.p[(c.i+1)%4], t=c.t;
+          const k = c.d/(1+(1-t)*(1-t)+t*t);
+          p.x+=c.nx*k; p.y+=c.ny*k;
+          a.x-=c.nx*k*(1-t); a.y-=c.ny*k*(1-t);
+          q.x-=c.nx*k*t; q.y-=c.ny*k*t;
+          // friction on relative tangential motion
+          const rx=(p.x-p.px)-((1-t)*(a.x-a.px)+t*(q.x-q.px));
+          const ry=(p.y-p.py)-((1-t)*(a.y-a.py)+t*(q.y-q.py));
+          const tan=rx*c.ex+ry*c.ey, at=Math.abs(tan);
+          if (at>1e-6){
+            const f=(at<MU_S*c.d?1:Math.min(MU_K*c.d/at,1))*tan*0.5;
+            p.x-=c.ex*f; p.y-=c.ey*f;
+            a.x+=c.ex*f*(1-t)*.5; a.y+=c.ey*f*(1-t)*.5;
+            q.x+=c.ex*f*t*.5; q.y+=c.ey*f*t*.5;
+          }
+        }
+        // edge-midpoint probes catch edge-edge crossings where no vertex is inside
+        const P=bodies[A].p;
+        for (let e=0;e<4;e++){
+          const u=P[e], v=P[(e+1)%4], m={x:(u.x+v.x)/2, y:(u.y+v.y)/2};
+          const c=inside(m, bb); if (!c) continue;
+          const a=bb.p[c.i], q=bb.p[(c.i+1)%4], t=c.t, k=c.d/(1.5+(1-t)*(1-t)+t*t);
+          u.x+=c.nx*k; u.y+=c.ny*k; v.x+=c.nx*k; v.y+=c.ny*k;
+          a.x-=c.nx*k*(1-t); a.y-=c.ny*k*(1-t); q.x-=c.nx*k*t; q.y-=c.ny*k*t;
+        }
+      }
+      for (const b of bodies) for (const p of b.p){ p.vx=(p.x-p.px)/h; p.vy=(p.y-p.py)/h; }
+    }
+  }
+
+  // Detect contacts on the final configuration (resting contacts included).
+  const TOL = 1.5;
+  function detect(){
+    contacts = [];
+    for (let A=0;A<bodies.length;A++) for (const p of bodies[A].p){
+      let hit = p.y >= H-R-TOL || p.x <= R+TOL || p.x >= W-R-TOL;
+      for (let B=0;B<bodies.length && !hit;B++)
+        if (B!==A && inside(p, bodies[B], TOL)) hit = true;
+      if (hit) contacts.push(p.x,p.y);
+    }
+  }
+
+  function draw(){
+    detect();
+    ctx.clearRect(0,0,W,H);
+    // faint floor line
+    ctx.strokeStyle='rgba(111,179,200,.25)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(0,H-.5); ctx.lineTo(W,H-.5); ctx.stroke();
+    for (const b of bodies){
+      const P=b.p;
+      ctx.beginPath(); ctx.moveTo(P[0].x,P[0].y);
+      for (let i=1;i<4;i++) ctx.lineTo(P[i].x,P[i].y);
+      ctx.closePath();
+      ctx.fillStyle = b.hue ? 'rgba(111,179,200,.28)' : 'rgba(111,179,200,.10)';
+      ctx.fill();
+      ctx.strokeStyle='rgba(111,179,200,.75)'; ctx.lineWidth=1.25; ctx.stroke();
+      ctx.fillStyle='#e9eef3';
+      for (const p of P){ ctx.beginPath(); ctx.arc(p.x,p.y,2,0,6.283); ctx.fill(); }
+    }
+    ctx.fillStyle='#ffb547';
+    for (let i=0;i<contacts.length;i+=2){ ctx.beginPath(); ctx.arc(contacts[i],contacts[i+1],3.2,0,6.283); ctx.fill(); }
+  }
+
+  let elapsed = 0;
+  let looping=false;
+  function frame(ts){
+    if (!running){ looping=false; return; }
+    looping=true;
+    const dt = Math.min((ts-(last||ts))/1000, 1/30); last = ts; elapsed += dt*1000;
+    while (queue.length && queue[0].t <= elapsed){
+      const q=queue.shift(); bodies.push(makeBody(q.x, -60, q.w, q.h, q.a));
+    }
+    step(dt || 1/60); draw();
+    requestAnimationFrame(frame);
+  }
+
+  function poke(e){
+    const r=cv.getBoundingClientRect(), x=e.clientX-r.left, y=e.clientY-r.top;
+    for (const b of bodies) for (const p of b.p){
+      const dx=p.x-x, dy=p.y-y, d=Math.hypot(dx,dy);
+      if (d<140){ const s=(1-d/140)*900; p.vx+=dx/(d||1)*s; p.vy+=dy/(d||1)*s - s*.6; }
+    }
+    if (reduce){ for(let i=0;i<90;i++) step(1/60); draw(); }
+  }
+
+  resize(); seed();
+  if (reduce){
+    queue.forEach(q => bodies.push(makeBody(q.x, H-120-Math.random()*200, q.w, q.h, q.a)));
+    queue=[]; for (let i=0;i<400;i++) step(1/60); draw();
+  } else {
+    looping=true; requestAnimationFrame(frame);
+    new IntersectionObserver(([en]) => {
+      running = en.isIntersecting;
+      if (running && !looping){ last = 0; looping=true; requestAnimationFrame(frame); }
+    }).observe(cv);
+  }
+  cv.addEventListener('click', poke);
+  let rt; addEventListener('resize', () => {
+    clearTimeout(rt); rt=setTimeout(() => {
+      const oldW=W; resize();
+      if (Math.abs(W-oldW) > 80){ elapsed=0; seed(); } else if (reduce) draw();
+    }, 150);
+  });
+})();
+</script>
+</body>
+</html>
