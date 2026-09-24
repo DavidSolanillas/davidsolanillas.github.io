@@ -73,7 +73,8 @@ main{max-width:var(--maxw);margin:0 auto;padding:0 22px 40px}
 section{padding-top:64px}
 h2{margin:0 0 20px;font-size:30px;line-height:1.1;font-weight:700;font-variation-settings:"wdth" 112;letter-spacing:-.01em}
 h3{margin:0 0 6px;font-size:20px;line-height:1.25;font-weight:650;font-variation-settings:"wdth" 100}
-p{margin:0 0 14px;max-width:68ch}
+p{margin:0 0 14px;max-width:680px}
+main p,.iros p{text-align:justify;-webkit-hyphens:auto;hyphens:auto}
 .muted{color:var(--muted)}
 
 /* IROS strip — the one thing a recruiter needs first */
@@ -101,6 +102,9 @@ p{margin:0 0 14px;max-width:68ch}
 }
 .media:not(:has(.frame)){aspect-ratio:16/9;display:grid;place-items:center}
 .media .frame video{display:block;width:100%;height:100%;background:#fff}
+.media-group.grid .frame{aspect-ratio:4/3}
+.media-group.grid .frame video{object-fit:contain}
+.media .frame.dark video{background:#1a1a1a}
 .media figcaption{padding:8px 10px;font-size:13px;line-height:1.4;color:var(--muted);background:var(--ink-2);border-top:1px solid var(--line)}
 .venue{display:inline-block;margin-top:4px;font-size:14px;color:var(--contact);font-weight:600}
 .venue a{color:inherit;text-decoration-color:currentColor}
@@ -172,8 +176,10 @@ footer .actions{margin-top:14px}
   .project{padding:34px 0}
   .project .media-group{margin:0 0 22px}
   .project .media-group.grid{display:grid;grid-template-columns:1fr 1fr}
-  .project .media-group.grid .wide{grid-column:1/-1}
-  .project p,.project h3{max-width:72ch}
+  .project .media-group.grid>:last-child:nth-child(odd){grid-column:1/-1;justify-self:center;width:calc(50% - 7px)}
+  .project .media-group.split{display:grid;grid-template-columns:1fr 1fr;align-items:start}
+  .project .media-group.split>:first-child{grid-row:span 2;align-self:center}
+  .project h3{max-width:680px}
   .facts{grid-template-columns:1fr 1fr;gap:48px}
   footer{padding-top:48px}
 }
@@ -203,7 +209,7 @@ footer .actions{margin-top:14px}
 <div class="iros" id="iros">
   <div class="wrap">
     <h2>Meeting me at IROS 2026?</h2>
-    <p><span class="when">Pittsburgh, Sep 27 – Oct 1.</span> I’m presenting the poster <a href="https://openreview.net/forum?id=K8gtLWH8hR" target="_blank" rel="noopener"><i>Contact Modelling Still Matters for Learning-Based Manipulation</i></a> at the Workshop on Contact &amp; Learning. I’m finishing my PhD and open to research and engineering roles in robot simulation, physics engines, sim-to-real and physical AI.</p>
+    <p><span class="when">Pittsburgh, Sep 27 – Oct 1.</span> I’m presenting the poster <a href="https://openreview.net/pdf?id=K8gtLWH8hR" target="_blank" rel="noopener"><i>Contact Modelling Still Matters for Learning-Based Manipulation</i></a> at the Workshop on Contact &amp; Learning. I’m finishing my PhD and open to research and engineering roles in robot simulation, physics engines, sim-to-real and physical AI.</p>
     <div class="actions">
       <a class="btn primary" href="cv.pdf" download>Download CV</a>
       <a class="btn" href="mailto:david.solanillas@mail.mcgill.ca?subject=Met%20at%20IROS%202026">Email me</a>
@@ -223,7 +229,7 @@ footer .actions{margin-top:14px}
   <h2>Research</h2>
 
   <article class="project">
-    <div class="media-group">
+    <div class="media-group split">
       <figure class="media">
         <div class="frame" style="aspect-ratio:1100/850"><video src="videos/lifting-friction.mp4" autoplay muted loop playsinline></video></div>
         <figcaption>Our bristle model lifting the block using friction alone — no virtual wall.</figcaption>
@@ -245,7 +251,7 @@ footer .actions{margin-top:14px}
       <p><b>Recovering a grasp after partial release.</b> Grasp an object, partly release it so it slips, then recover the grasp. Velocity-level formulations need heavy tuning here too: without an elastic state, exact sticking is never attained, some slip always persists, and the grasp is never quite recovered. In the bristle model, friction force is non-zero at zero slip velocity, so the grasp recovers cleanly.</p>
     </div>
     <p class="thesis">Same pattern each time: the gap wasn't in the policy, it was in what the simulator could represent in the first place.</p>
-    <span class="venue">RoboSim 2026 · <a href="https://openreview.net/forum?id=K8gtLWH8hR" target="_blank" rel="noopener">IROS 2026 Workshop on Contact &amp; Learning</a></span>
+    <span class="venue">RoboSim 2026 · <a href="https://sites.google.com/view/contact-and-learning/home" target="_blank" rel="noopener">IROS 2026 Workshop on Contact &amp; Learning</a></span>
   </article>
 
   <article class="project">
@@ -262,25 +268,25 @@ footer .actions{margin-top:14px}
 
   <article class="project">
     <div class="media-group grid">
-      <figure class="media wide">
-        <div class="frame" style="aspect-ratio:1255/926"><video src="videos/Demolition.mp4" autoplay muted loop playsinline preload="metadata"></video></div>
+      <figure class="media">
+        <div class="frame dark"><video src="videos/Demolition.mp4" autoplay muted loop playsinline preload="metadata"></video></div>
         <figcaption>Building demolition, simulated as clusters of constrained particles in Vortex Studio.</figcaption>
       </figure>
       <figure class="media">
-        <div class="frame" style="aspect-ratio:800/600"><video src="videos/RevoluteJoint.mp4" autoplay muted loop playsinline preload="metadata"></video></div>
+        <div class="frame dark"><video src="videos/BuriedBody.mp4" autoplay muted loop playsinline preload="metadata"></video></div>
+        <figcaption>Bodies buried in soil in Vortex Studio — soil and bodies modelled in the same particle framework.</figcaption>
+      </figure>
+      <figure class="media">
+        <div class="frame"><video src="videos/RevoluteJoint.mp4" autoplay muted loop playsinline preload="metadata"></video></div>
         <figcaption>Revolute joint modelled in MATLAB, before porting it to C++.</figcaption>
       </figure>
       <figure class="media">
-        <div class="frame" style="aspect-ratio:800/600"><video src="videos/PrismaticJoint.mp4" autoplay muted loop playsinline preload="metadata"></video></div>
+        <div class="frame"><video src="videos/PrismaticJoint.mp4" autoplay muted loop playsinline preload="metadata"></video></div>
         <figcaption>Same approach for a prismatic joint.</figcaption>
       </figure>
       <figure class="media">
-        <div class="frame" style="aspect-ratio:1578/1178"><video src="videos/Tubes.mp4" autoplay muted loop playsinline preload="metadata"></video></div>
-        <figcaption>Slender bodies such as tubes, built from chains of constrained particles.</figcaption>
-      </figure>
-      <figure class="media">
-        <div class="frame" style="aspect-ratio:1600/1414"><video src="videos/BuriedBody.mp4" autoplay muted loop playsinline preload="metadata"></video></div>
-        <figcaption>Bodies buried in soil in Vortex Studio — soil and bodies modelled in the same particle framework.</figcaption>
+        <div class="frame"><video src="videos/Tubes.mp4" autoplay muted loop playsinline preload="metadata"></video></div>
+        <figcaption>Slender bodies such as tubes, built from chains of constrained particles (MATLAB).</figcaption>
       </figure>
     </div>
     <h3>Particle-based simulation of rigid bodies and joints</h3>
