@@ -17,7 +17,7 @@
 :root{
   --ink:#101a2c;        /* deep engineering blue */
   --ink-2:#17243b;
-  --line:#2a3a55;
+  --line:#44587c;
   --paper:#e9eef3;      /* text */
   --muted:#93a4b9;
   --steel:#6fb3c8;      /* bodies */
@@ -73,7 +73,7 @@ main{max-width:var(--maxw);margin:0 auto;padding:0 22px 40px}
 section{padding-top:64px}
 h2{margin:0 0 20px;font-size:30px;line-height:1.1;font-weight:700;font-variation-settings:"wdth" 112;letter-spacing:-.01em}
 h3{margin:0 0 6px;font-size:20px;line-height:1.25;font-weight:650;font-variation-settings:"wdth" 100}
-p{margin:0 0 14px;max-width:680px}
+p{margin:0 0 14px;max-width:720px}
 main p,.iros p{text-align:justify;-webkit-hyphens:auto;hyphens:auto}
 .muted{color:var(--muted)}
 
@@ -89,6 +89,7 @@ main p,.iros p{text-align:justify;-webkit-hyphens:auto;hyphens:auto}
 /* Research */
 .project{padding:26px 0;border-top:1px solid var(--line)}
 .project:first-of-type{border-top:0;padding-top:0}
+.project>h3{margin-bottom:14px}
 .media-group{display:flex;flex-direction:column;gap:14px;margin:0 0 16px}
 .media{
   position:relative;border-radius:10px;overflow:hidden;margin:0;
@@ -161,7 +162,7 @@ footer .actions{margin-top:14px}
 
 /* ---------- Desktop: use the width ---------- */
 @media (min-width:1000px){
-  :root{--maxw:1180px}
+  :root{--maxw:1042px}
   body{font-size:18px}
   .hero-text{padding-top:84px}
   h1{font-size:clamp(72px,6.5vw,96px)}
@@ -170,7 +171,7 @@ footer .actions{margin-top:14px}
   .iros h2{grid-column:1/-1;margin:0}
   .iros p{margin:0}
   .iros .actions{margin:0}
-  section{display:grid;grid-template-columns:230px 1fr;gap:0 48px;padding-top:88px}
+  section{display:grid;grid-template-columns:230px minmax(0,720px);gap:0 48px;padding-top:88px}
   section>h2{grid-column:1;grid-row:1/span 30;position:sticky;top:28px;align-self:start;font-size:28px}
   section>:not(h2){grid-column:2}
   .project{padding:34px 0}
@@ -179,7 +180,6 @@ footer .actions{margin-top:14px}
   .project .media-group.grid>:last-child:nth-child(odd){grid-column:1/-1;justify-self:center;width:calc(50% - 7px)}
   .project .media-group.split{display:grid;grid-template-columns:1fr 1fr;align-items:start}
   .project .media-group.split>:first-child{grid-row:span 2;align-self:center}
-  .project h3{max-width:680px}
   .facts{grid-template-columns:1fr 1fr;gap:48px}
   footer{padding-top:48px}
 }
@@ -209,7 +209,7 @@ footer .actions{margin-top:14px}
 <div class="iros" id="iros">
   <div class="wrap">
     <h2>Meeting me at IROS 2026?</h2>
-    <p><span class="when">Pittsburgh, Sep 27 – Oct 1.</span> I’m presenting the poster <a href="https://openreview.net/pdf?id=K8gtLWH8hR" target="_blank" rel="noopener"><i>Contact Modelling Still Matters for Learning-Based Manipulation</i></a> at the Workshop on Contact &amp; Learning. I’m finishing my PhD and open to research and engineering roles in robot simulation, physics engines, sim-to-real and physical AI.</p>
+    <p><span class="when">Pittsburgh, Sep 27 – Oct 1.</span> I’m presenting the poster <a href="https://openreview.net/pdf?id=K8gtLWH8hR" target="_blank" rel="noopener"><i>Contact Modelling Still Matters for Learning-Based Manipulation</i></a> at the <a href="https://sites.google.com/view/contact-and-learning/home" target="_blank" rel="noopener">Workshop on Contact &amp; Learning</a>. I’m finishing my PhD and open to research and engineering roles in robot simulation, physics engines, sim-to-real and physical AI.</p>
     <div class="actions">
       <a class="btn primary" href="cv.pdf" download>Download CV</a>
       <a class="btn" href="mailto:david.solanillas@mail.mcgill.ca?subject=Met%20at%20IROS%202026">Email me</a>
@@ -222,55 +222,56 @@ footer .actions{margin-top:14px}
 <section id="about">
   <h2>About</h2>
   <p>I work on multibody systems with unilateral contact and friction, applied to robotics. I have four first-author journal papers (IEEE RA-L, Mechanism and Machine Theory, ASME Journal of Applied Mechanics), and I’ve implemented and validated position-based dynamics algorithms in C++ inside CM Labs’ Vortex Studio, a commercial simulation engine.</p>
-  <p>Right now I’m studying how the fidelity of the contact model limits what robot policies can learn in simulation.</p>
+  <p>I’m currently studying how the fidelity of the contact model limits what robot policies can learn in simulation.</p>
 </section>
 
 <section id="research">
   <h2>Research</h2>
 
   <article class="project">
+    <h3>Contact models and robot learning</h3>
     <div class="media-group split">
       <figure class="media">
         <div class="frame" style="aspect-ratio:1100/850"><video src="videos/lifting-friction.mp4" autoplay muted loop playsinline></video></div>
-        <figcaption>Our bristle model lifting the block using friction alone — no virtual wall.</figcaption>
+        <figcaption>Example of a non-prehensile task where our bristle model is able to lift the brick by using only friction.</figcaption>
       </figure>
       <figure class="media">
         <div class="frame" style="aspect-ratio:1100/366"><video src="videos/jamming.mp4" autoplay muted loop playsinline></video></div>
-        <figcaption>Pushed into the shelf, the bristle model jams and holds under 100,000&nbsp;N; MuJoCo's arm slips the box straight through.</figcaption>
+        <figcaption>With the brick pushed into the shelf, the bristle model jams and holds under high load; MuJoCo's arm slips the box straight through.</figcaption>
       </figure>
       <figure class="media">
         <div class="frame" style="aspect-ratio:1536/640"><video src="videos/grasp-comparison.mp4" autoplay muted loop playsinline></video></div>
         <figcaption>Bristle model (μ=0.75, left) vs MuJoCo's pyramidal friction cone (μ=0.75, right) on the same grasp.</figcaption>
       </figure>
     </div>
-    <h3>Contact models and robot learning</h3>
-    <p class="thesis">If a simulator can't reproduce a contact behavior, a robot trained in it can't learn to rely on that behavior either. I traced three cases where MuJoCo's contact model breaks down to a specific modelling choice, not to the RL on top of it.</p>
+    <p class="thesis">If a contact model can't capture an important physical phenomenon — such as pure sticking, stick-slip transitions or jamming — agents trained in the simulator have to find a workaround. I compared <a href="https://mujoco.readthedocs.io/en/stable/overview.html" target="_blank" rel="noopener">MuJoCo</a>'s default contact model with our bristle-based model in three cases where standard convex models fall short.</p>
     <div class="findings">
-      <p><b>Lifting with friction alone.</b> <a href="https://www.merl.com/publications/TR2025-169" target="_blank" rel="noopener">Shirai et al., NeurIPS 2025 workshop</a> found that raising the friction coefficient wasn't enough to reproduce a friction-only lift in simulation, and added a virtual wall behind the object to make the task trainable. Our reading: their convex contact model can't represent stick-slip transitions or pure sticking. A bristle friction model lifts the same object with no wall.</p>
-      <p><b>Sustaining a jam under load.</b> Tilt a brick until it wedges, then increase the load: reproducing this in MuJoCo takes heavy parameter tuning, because dropping the complementarity condition makes the normal force follow from a penalty stiffness, and the defaults never reach the value needed to hold the wedge. In our LCP-based model, sticking is a real state — force at zero slip velocity — so the wedge survives up to 100,000&nbsp;N.</p>
-      <p><b>Recovering a grasp after partial release.</b> Grasp an object, partly release it so it slips, then recover the grasp. Velocity-level formulations need heavy tuning here too: without an elastic state, exact sticking is never attained, some slip always persists, and the grasp is never quite recovered. In the bristle model, friction force is non-zero at zero slip velocity, so the grasp recovers cleanly.</p>
+      <p><b>Lifting with friction alone.</b> <a href="https://www.merl.com/publications/TR2025-169" target="_blank" rel="noopener">Shirai et al., NeurIPS 2025 workshop</a> found that raising the friction coefficient in MuJoCo wasn't enough to reproduce a friction-only lift in simulation, and added a virtual wall behind the object to make the task trainable. My hypothesis is that their convex contact model can't represent stick-slip transitions or pure sticking. Our bristle friction model instead lifts the same object with no wall.</p>
+      <p><b>Sustaining a jam under load.</b> The task is simple: tilt a brick until it wedges, then increase the load. Reproducing this in MuJoCo takes heavy parameter tuning. My view on this is that, since exact sticking is not possible, the box slides and the jamming geometry is lost. A second possible cause is the normal direction: with the complementarity condition dropped, the normal force comes from minimizing a penalty cost on penetration, so it is not given by a constitutive relation and cannot be reasoned about from a stiffness we set. In our bristle, LCP-based model, the normal force follows from the regularized complementarity condition, and sticking is a real state — friction force at zero slip velocity — so the wedge survives under high loads.</p>
+      <p><b>Recovering a grasp after partial release.</b> For this example, first, we grasp an object. Then, we partly release it so it slips. And, finally, we recover the grasp. Here, MuJoCo needs heavy tuning too: its regularized friction behaves like viscous friction near zero slip, so exact sticking is never achieved, some slip always persists, and the grasp is never quite recovered. In the bristle model, friction force is non-zero at zero slip velocity, so the grasp recovers cleanly.</p>
     </div>
-    <p class="thesis">Same pattern each time: the gap wasn't in the policy, it was in what the simulator could represent in the first place.</p>
+    <!-- <p class="thesis">Same pattern each time: the gap wasn't in the policy, it was in what the simulator could represent in the first place.</p> -->
     <span class="venue">RoboSim 2026 · <a href="https://sites.google.com/view/contact-and-learning/home" target="_blank" rel="noopener">IROS 2026 Workshop on Contact &amp; Learning</a></span>
   </article>
 
   <article class="project">
+    <h3>A point-mass representation for rigid-body dynamics</h3>
     <div class="media-group">
       <figure class="media">
         <div class="frame" style="aspect-ratio:1600/800"><video src="videos/point-mass.mp4" autoplay muted loop playsinline></video></div>
         <figcaption>Rendered arm (left) and its point-mass schematic (right), same motion.</figcaption>
       </figure>
     </div>
-    <h3>A point-mass representation for rigid-body dynamics</h3>
-    <p>Every rigid body can be represented as a small system of point masses instead of the usual inertia tensor. The mass matrix comes out constant, the nonlinear inertial terms disappear, and the constraint Jacobians are linear in the generalized coordinates. That matters for differentiable physics in particular: the terms that are normally expensive to differentiate through a physics engine either vanish or can be precomputed once, instead of on every step.</p>
+    <p>Every rigid body can be represented as a system of four point masses instead of the usual inertia tensor. The mass matrix comes out constant, the nonlinear inertial terms disappear, and the constraint Jacobians become linear in the generalized coordinates. That is especially interesting for differentiable physics: the terms that are normally expensive to differentiate through a physics engine either vanish or can be precomputed once, instead of on every step.</p>
     <span class="venue">RoboSim 2026</span>
   </article>
 
   <article class="project">
+    <h3>Particle-based simulation of rigid bodies and joints</h3>
     <div class="media-group grid">
       <figure class="media">
         <div class="frame dark"><video src="videos/Demolition.mp4" autoplay muted loop playsinline preload="metadata"></video></div>
-        <figcaption>Building demolition, simulated as clusters of constrained particles in Vortex Studio.</figcaption>
+        <figcaption>Building demolition, simulated as groups of constrained particles in Vortex Studio.</figcaption>
       </figure>
       <figure class="media">
         <div class="frame dark"><video src="videos/BuriedBody.mp4" autoplay muted loop playsinline preload="metadata"></video></div>
@@ -282,17 +283,16 @@ footer .actions{margin-top:14px}
       </figure>
       <figure class="media">
         <div class="frame"><video src="videos/PrismaticJoint.mp4" autoplay muted loop playsinline preload="metadata"></video></div>
-        <figcaption>Same approach for a prismatic joint.</figcaption>
+        <figcaption>Same approach for a prismatic joint (MATLAB).</figcaption>
       </figure>
       <figure class="media">
         <div class="frame"><video src="videos/Tubes.mp4" autoplay muted loop playsinline preload="metadata"></video></div>
-        <figcaption>Slender bodies such as tubes, built from chains of constrained particles (MATLAB).</figcaption>
+        <figcaption>Slender bodies such as tubes, built from groups of constrained particles (MATLAB).</figcaption>
       </figure>
     </div>
-    <h3>Particle-based simulation of rigid bodies and joints</h3>
-    <p>At CM Labs Simulations I implement and validate this in C++ inside <a href="https://www.cm-labs.com/en/vortex-studio/" target="_blank" rel="noopener">Vortex Studio</a>, their production physics engine. It builds on the <a href="https://doi.org/10.2312/vriphys.20141232" target="_blank" rel="noopener">Parallel Particles (P²) method</a> (Holz, VRIPHYS 2014), originally designed for soil simulation and built for fast, parallel contact detection between free particles. I hold particles together with constant-distance constraints to form rigid bodies — the original method only has loose particles — so a structure like a building can be modelled as clusters of constrained particles while keeping the method's fast contact detection, which is what makes large-scale demolition and fragmentation tractable. The same construction handles slender bodies such as tree trunks or tubes, which are awkward to represent with conventional rigid-body collision geometry. Because soil and bodies live in the same particle framework, the same approach also handles bodies buried in soil.</p>
+    <p>During my collaboration with our research partner, <a href="https://cm-labs.com/" target="_blank" rel="noopener">CM Labs Simulations</a>, I implemented and validated this in C++ inside <a href="https://www.cm-labs.com/en/vortex-studio/" target="_blank" rel="noopener">Vortex Studio</a>, their production physics engine. It extends their implementation of the <a href="https://doi.org/10.2312/vriphys.20141232" target="_blank" rel="noopener">Parallel Particles (P²) method</a> (Holz, VRIPHYS 2014), originally designed for soil simulation and built for fast, parallel contact detection between free particles. My contribution lies in holding the particles together with constant-distance constraints to form rigid bodies, so a structure like a building can be modelled as groups of constrained particles while keeping the method's fast contact detection, which is what makes large-scale demolition and fragmentation tractable. The same construction handles slender bodies such as tree trunks or tubes. Because soil and bodies live in the same particle framework, the same approach also handles bodies buried in soil, something very valuable for construction-site simulations, where pipes or rocks can be buried in the working terrain.</p>
     <p>I'm extending the same approach to multibody systems with joints — revolute and prismatic so far — validated first in MATLAB before anything goes into C++.</p>
-    <span class="venue">CM Labs Simulations · Vortex Studio</span>
+    <span class="venue"><a href="https://cm-labs.com/" target="_blank" rel="noopener">CM Labs Simulations</a> · <a href="https://www.cm-labs.com/en/vortex-studio/" target="_blank" rel="noopener">Vortex Studio</a></span>
   </article>
 </section>
 
@@ -303,8 +303,8 @@ footer .actions{margin-top:14px}
       <h3>Research collaboration, CM Labs Simulations (Vortex Studio)</h3>
       <p>Implemented and validated position-based dynamics algorithms in C++ inside the Vortex Studio production codebase.</p></li>
     <li class="now"><span class="yr">2021 – now</span>
-      <h3>PhD researcher, Applied Dynamics Lab, McGill</h3>
-      <p>Supervised by Prof. József Kövecses. Dynamic formulations and time-stepping schemes for multibody systems with contact and friction, applied to robotic manipulators.</p></li>
+      <h3>PhD researcher, <a href="https://cim.mcgill.ca/~adyn/" target="_blank" rel="noopener">Applied Dynamics Lab</a>, McGill</h3>
+      <p>Supervised by <a href="https://www.mcgill.ca/mecheng/jozsef-kovecses" target="_blank" rel="noopener">Prof. József Kövecses</a>. Dynamic formulations and time-stepping schemes for multibody systems with contact and friction, applied to robotic manipulators.</p></li>
     <li><span class="yr">2020 – 2021</span>
       <h3>Researcher, University of the Basque Country</h3>
       <p>Modelled and validated compliant closed-loop manipulators; led to a journal paper.</p></li>
@@ -319,7 +319,7 @@ footer .actions{margin-top:14px}
   <ul class="pubs">
     <li><span class="t">A New Approach for the Computation of the Coriolis/Centrifugal Matrix</span>
       <span class="a"><b>D. M. Solanillas Francés</b>, J. Kövecses</span><br>
-      <span class="v"><i>IEEE Robotics and Automation Letters</i> 11(10), 2026 · <a href="https://ieeexplore.ieee.org/author/37394714400" target="_blank" rel="noopener">IEEE Xplore</a></span></li>
+      <span class="v"><i>IEEE Robotics and Automation Letters</i> 11(10), 2026 · <a href="https://doi.org/10.1109/LRA.2026.3723336" target="_blank" rel="noopener">DOI</a></span></li>
     <li><span class="t">Dynamics Representation of Mechanical Systems for Time-Stepping Problems</span>
       <span class="a"><b>D. M. Solanillas Francés</b>, J. Kövecses</span><br>
       <span class="v"><i>Mechanism and Machine Theory</i> 218, 2025 · <a href="https://doi.org/10.1016/j.mechmachtheory.2025.106292" target="_blank" rel="noopener">DOI</a></span></li>
@@ -367,12 +367,12 @@ footer .actions{margin-top:14px}
       <div class="skill"><b>Python</b><span>MuJoCo benchmarking and contact-fidelity analysis</span></div>
       <div class="skill"><b>MATLAB</b><span>Formulations and time-stepping schemes behind all my papers</span></div>
       <div class="skill"><b>CUDA</b><span>NVIDIA DLI, Fundamentals of Accelerated Computing (2022)</span></div>
-      <div class="skill"><b>Methods</b><span>Non-smooth dynamics, LCP/MLCP and pivoting methods, bristle friction, convex relaxations of contact, differentiable physics</span></div>
+      <div class="skill"><b>Methods</b><span>Non-smooth dynamics, LCP/MLCP and pivoting methods, friction models, convex relaxations of contact, differentiable physics</span></div>
     </div>
     <div>
       <h3>Education</h3>
       <ul>
-        <li>PhD Mechanical Engineering, McGill University, 2021 – now</li>
+        <li>PhD Mechanical Engineering, McGill University, 2021 – present.</li>
         <li>MSc Mechanical Engineering, University of the Basque Country, 2020.</li>
         <li>BSc Mechanical Engineering, University of Zaragoza, 2018.</li>
       </ul>
@@ -389,7 +389,7 @@ footer .actions{margin-top:14px}
 </main>
 
 <footer>
-  Let’s talk about contact, simulation, sim-to-real or physical AI.
+  Let’s talk about contact, simulations or physical AI.
   <div class="actions">
     <a class="btn primary" href="mailto:david.solanillas@mail.mcgill.ca">david.solanillas@mail.mcgill.ca</a>
     <a class="btn" href="cv.pdf" download>Download CV</a>
