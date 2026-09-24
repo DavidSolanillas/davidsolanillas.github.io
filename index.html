@@ -169,9 +169,11 @@ footer .actions{margin-top:14px}
   section{display:grid;grid-template-columns:230px 1fr;gap:0 48px;padding-top:88px}
   section>h2{grid-column:1;grid-row:1/span 30;position:sticky;top:28px;align-self:start;font-size:28px}
   section>:not(h2){grid-column:2}
-  .project{display:grid;grid-template-columns:1.1fr 1fr;grid-template-rows:auto auto 1fr;gap:0 32px;padding:34px 0}
-  .project .media-group{grid-column:1;grid-row:1/span 3;margin:0}
-  .project>:not(.media-group){grid-column:2}
+  .project{padding:34px 0}
+  .project .media-group{margin:0 0 22px}
+  .project .media-group.grid{display:grid;grid-template-columns:1fr 1fr}
+  .project .media-group.grid .wide{grid-column:1/-1}
+  .project p,.project h3{max-width:72ch}
   .facts{grid-template-columns:1fr 1fr;gap:48px}
   footer{padding-top:48px}
 }
@@ -259,22 +261,30 @@ footer .actions{margin-top:14px}
   </article>
 
   <article class="project">
-    <div class="media-group">
-      <figure class="media"><div class="frame" style="aspect-ratio:16/9;display:grid;place-items:center">Video coming soon</div>
+    <div class="media-group grid">
+      <figure class="media wide">
+        <div class="frame" style="aspect-ratio:1255/926"><video src="videos/Demolition.mp4" autoplay muted loop playsinline preload="metadata"></video></div>
         <figcaption>Building demolition, simulated as clusters of constrained particles in Vortex Studio.</figcaption>
       </figure>
-      <figure class="media"><div class="frame" style="aspect-ratio:16/9;display:grid;place-items:center">Video coming soon</div>
-        <figcaption>Joint modelled in MATLAB (revolute), before porting it to C++.</figcaption>
+      <figure class="media">
+        <div class="frame" style="aspect-ratio:800/600"><video src="videos/RevoluteJoint.mp4" autoplay muted loop playsinline preload="metadata"></video></div>
+        <figcaption>Revolute joint modelled in MATLAB, before porting it to C++.</figcaption>
       </figure>
-      <figure class="media"><div class="frame" style="aspect-ratio:16/9;display:grid;place-items:center">Video coming soon</div>
+      <figure class="media">
+        <div class="frame" style="aspect-ratio:800/600"><video src="videos/PrismaticJoint.mp4" autoplay muted loop playsinline preload="metadata"></video></div>
         <figcaption>Same approach for a prismatic joint.</figcaption>
       </figure>
-      <figure class="media"><div class="frame" style="aspect-ratio:16/9;display:grid;place-items:center">Video coming soon</div>
+      <figure class="media">
+        <div class="frame" style="aspect-ratio:1578/1178"><video src="videos/Tubes.mp4" autoplay muted loop playsinline preload="metadata"></video></div>
+        <figcaption>Slender bodies such as tubes, built from chains of constrained particles.</figcaption>
+      </figure>
+      <figure class="media">
+        <div class="frame" style="aspect-ratio:1600/1414"><video src="videos/BuriedBody.mp4" autoplay muted loop playsinline preload="metadata"></video></div>
         <figcaption>Bodies buried in soil in Vortex Studio — soil and bodies modelled in the same particle framework.</figcaption>
       </figure>
     </div>
     <h3>Particle-based simulation of rigid bodies and joints</h3>
-    <p>At CM Labs Simulations I implement and validate this in C++ inside <a href="https://www.cm-labs.com/en/vortex-studio/" target="_blank" rel="noopener">Vortex Studio</a>, their production physics engine. It builds on the <a href="https://doi.org/10.2312/vriphys.20141232" target="_blank" rel="noopener">Parallel Particles (P²) method</a> (Holz, VRIPHYS 2014), originally designed for soil simulation and built for fast, parallel contact detection between free particles. I hold particles together with constant-distance constraints to form rigid bodies — the original method only has loose particles — so a structure like a building can be modelled as clusters of constrained particles while keeping the method's fast contact detection, which is what makes large-scale demolition and fragmentation tractable. Because soil and bodies live in the same particle framework, the same approach also handles bodies buried in soil.</p>
+    <p>At CM Labs Simulations I implement and validate this in C++ inside <a href="https://www.cm-labs.com/en/vortex-studio/" target="_blank" rel="noopener">Vortex Studio</a>, their production physics engine. It builds on the <a href="https://doi.org/10.2312/vriphys.20141232" target="_blank" rel="noopener">Parallel Particles (P²) method</a> (Holz, VRIPHYS 2014), originally designed for soil simulation and built for fast, parallel contact detection between free particles. I hold particles together with constant-distance constraints to form rigid bodies — the original method only has loose particles — so a structure like a building can be modelled as clusters of constrained particles while keeping the method's fast contact detection, which is what makes large-scale demolition and fragmentation tractable. The same construction handles slender bodies such as tree trunks or tubes, which are awkward to represent with conventional rigid-body collision geometry. Because soil and bodies live in the same particle framework, the same approach also handles bodies buried in soil.</p>
     <p>I'm extending the same approach to multibody systems with joints — revolute and prismatic so far — validated first in MATLAB before anything goes into C++.</p>
     <span class="venue">CM Labs Simulations · Vortex Studio</span>
   </article>
