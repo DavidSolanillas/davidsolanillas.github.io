@@ -51,10 +51,9 @@ img,video{max-width:100%;display:block}
 .hero-text{position:relative;z-index:2;max-width:var(--maxw);margin:0 auto;padding:56px 22px 0;pointer-events:none}
 .hero-text a,.hero-text button{pointer-events:auto}
 h1{
-  margin:0;font-size:clamp(46px,13vw,104px);line-height:.88;letter-spacing:-.02em;
-  font-weight:800;font-variation-settings:"wdth" 125;
+  margin:0;font-size:clamp(40px,10.5vw,84px);line-height:1;letter-spacing:-.015em;
+  font-weight:700;font-variation-settings:"wdth" 108;
 }
-h1 span{display:block;font-weight:300;font-variation-settings:"wdth" 62;letter-spacing:0}
 .role{margin:22px 0 0;max-width:30ch;font-size:clamp(18px,4.6vw,22px);line-height:1.35;color:var(--paper)}
 .role small{display:block;color:var(--muted);font-size:15px;margin-top:6px}
 .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
@@ -89,16 +88,28 @@ p{margin:0 0 14px;max-width:68ch}
 /* Research */
 .project{padding:26px 0;border-top:1px solid var(--line)}
 .project:first-of-type{border-top:0;padding-top:0}
+.media-group{display:flex;flex-direction:column;gap:14px;margin:0 0 16px}
 .media{
-  position:relative;aspect-ratio:16/9;border-radius:10px;overflow:hidden;margin:0 0 16px;
+  position:relative;border-radius:10px;overflow:hidden;margin:0;
+  border:1px solid var(--line);color:var(--muted);font-size:14px
+}
+.media .frame{
   background:
     repeating-linear-gradient(0deg,transparent 0 23px,rgba(111,179,200,.08) 23px 24px),
     repeating-linear-gradient(90deg,transparent 0 23px,rgba(111,179,200,.08) 23px 24px),
     var(--ink-2);
-  border:1px solid var(--line);display:grid;place-items:center;color:var(--muted);font-size:14px
 }
-.media video{width:100%;height:100%;object-fit:cover}
+.media:not(:has(.frame)){aspect-ratio:16/9;display:grid;place-items:center}
+.media .frame video{display:block;width:100%;height:100%;background:#fff}
+.media figcaption{padding:8px 10px;font-size:13px;line-height:1.4;color:var(--muted);background:var(--ink-2);border-top:1px solid var(--line)}
 .venue{display:inline-block;margin-top:4px;font-size:14px;color:var(--contact);font-weight:600}
+.venue a{color:inherit;text-decoration-color:currentColor}
+.venue a:hover{opacity:.8}
+.iros p a{color:var(--paper);text-decoration-color:var(--contact)}
+.thesis{font-size:16.5px;color:#dbe4ee}
+.findings{margin:4px 0 14px}
+.findings p{margin:0 0 14px;font-size:15.5px}
+.findings b{color:var(--paper)}
 
 /* Publications */
 .pubs{list-style:none;margin:0;padding:0}
@@ -120,10 +131,12 @@ p{margin:0 0 14px;max-width:68ch}
 
 /* Talks */
 .talks{list-style:none;margin:0;padding:0}
-.talks li{display:grid;grid-template-columns:5.2em 1fr;gap:12px;padding:10px 0;border-top:1px solid var(--line);font-size:15.5px}
+.talks li{display:grid;grid-template-columns:5.2em 1fr;gap:2px 12px;padding:12px 0;border-top:1px solid var(--line);font-size:15.5px}
 .talks li:first-child{border-top:0}
-.talks .d{color:var(--muted);font-variant-numeric:tabular-nums}
+.talks .d{color:var(--muted);font-variant-numeric:tabular-nums;padding-top:1px}
 .talks .up{color:var(--contact);font-weight:600}
+.talks .t{display:block;font-weight:600;line-height:1.35}
+.talks .v{display:block;font-size:13.5px;color:var(--muted);margin-top:2px}
 details{margin-top:8px}
 summary{cursor:pointer;color:var(--steel);font-weight:600;padding:8px 0;list-style:none}
 summary::-webkit-details-marker{display:none}
@@ -142,6 +155,27 @@ details[open] summary::before{content:"− ";}
 footer{max-width:var(--maxw);margin:0 auto;padding:40px 22px 48px;border-top:1px solid var(--line);color:var(--muted);font-size:15px}
 footer .actions{margin-top:14px}
 
+/* ---------- Desktop: use the width ---------- */
+@media (min-width:1000px){
+  :root{--maxw:1180px}
+  body{font-size:18px}
+  .hero-text{padding-top:84px}
+  h1{font-size:clamp(72px,6.5vw,96px)}
+  .role{font-size:26px;max-width:32ch}
+  .iros .wrap{display:grid;grid-template-columns:1fr auto;gap:12px 48px;align-items:center;padding:34px 22px}
+  .iros h2{grid-column:1/-1;margin:0}
+  .iros p{margin:0}
+  .iros .actions{margin:0}
+  section{display:grid;grid-template-columns:230px 1fr;gap:0 48px;padding-top:88px}
+  section>h2{grid-column:1;grid-row:1/span 30;position:sticky;top:28px;align-self:start;font-size:28px}
+  section>:not(h2){grid-column:2}
+  .project{display:grid;grid-template-columns:1.1fr 1fr;grid-template-rows:auto auto 1fr;gap:0 32px;padding:34px 0}
+  .project .media-group{grid-column:1;grid-row:1/span 3;margin:0}
+  .project>:not(.media-group){grid-column:2}
+  .facts{grid-template-columns:1fr 1fr;gap:48px}
+  footer{padding-top:48px}
+}
+
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 </style>
 </head>
@@ -150,16 +184,15 @@ footer .actions{margin-top:14px}
 <header class="hero" id="top">
   <canvas id="sim" aria-hidden="true"></canvas>
   <div class="hero-text">
-    <h1>David<span>Solanillas</span></h1>
-    <p class="role">I model contact and friction so that robots learn the right thing in simulation.
+    <h1>David Solanillas</h1>
+    <p class="role">I model contact and friction so that robots learn accurate physics in simulation.
       <small>Final-year PhD, Applied Dynamics Lab, McGill University</small></p>
     <div class="actions">
       <!-- Put your CV in the repo as cv.pdf -->
       <a class="btn primary" href="cv.pdf" download>Download CV</a>
       <a class="btn" href="mailto:david.solanillas@mail.mcgill.ca">Email</a>
-      <!-- TODO: replace # with your real profile links -->
-      <a class="btn" href="#" target="_blank" rel="noopener">LinkedIn</a>
-      <a class="btn" href="#" target="_blank" rel="noopener">ORCID</a>
+      <a class="btn" href="https://www.linkedin.com/in/david-solanillas" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn" href="https://orcid.org/0000-0003-0302-3198" target="_blank" rel="noopener">ORCID</a>
     </div>
     <p class="sim-note">A toy position-based dynamics simulation running in your browser. <b>Amber dots</b> are active contacts. Tap to disturb the blocks.</p>
   </div>
@@ -168,7 +201,7 @@ footer .actions{margin-top:14px}
 <div class="iros" id="iros">
   <div class="wrap">
     <h2>Meeting me at IROS 2026?</h2>
-    <p><span class="when">Pittsburgh, Sep 27 – Oct 1.</span> I’m presenting the poster <i>Contact Modelling Still Matters for Learning-Based Manipulation</i> at the Workshop on Contact &amp; Learning. I’m finishing my PhD and open to research and engineering roles in robot simulation, physics engines and sim-to-real.</p>
+    <p><span class="when">Pittsburgh, Sep 27 – Oct 1.</span> I’m presenting the poster <a href="https://openreview.net/forum?id=K8gtLWH8hR" target="_blank" rel="noopener"><i>Contact Modelling Still Matters for Learning-Based Manipulation</i></a> at the Workshop on Contact &amp; Learning. I’m finishing my PhD and open to research and engineering roles in robot simulation, physics engines, sim-to-real and physical AI.</p>
     <div class="actions">
       <a class="btn primary" href="cv.pdf" download>Download CV</a>
       <a class="btn" href="mailto:david.solanillas@mail.mcgill.ca?subject=Met%20at%20IROS%202026">Email me</a>
@@ -180,7 +213,7 @@ footer .actions{margin-top:14px}
 
 <section id="about">
   <h2>About</h2>
-  <p>I work on multibody systems with unilateral contact and friction, applied to robotics. I have four first-author journal papers (IEEE RA-L, Mechanism and Machine Theory, ASME Journal of Applied Mechanics), and I’ve implemented and validated position-based dynamics algorithms in C++ inside CM Labs’ Vortex, a commercial simulation engine.</p>
+  <p>I work on multibody systems with unilateral contact and friction, applied to robotics. I have four first-author journal papers (IEEE RA-L, Mechanism and Machine Theory, ASME Journal of Applied Mechanics), and I’ve implemented and validated position-based dynamics algorithms in C++ inside CM Labs’ Vortex Studio, a commercial simulation engine.</p>
   <p>Right now I’m studying how the fidelity of the contact model limits what robot policies can learn in simulation.</p>
 </section>
 
@@ -188,55 +221,63 @@ footer .actions{margin-top:14px}
   <h2>Research</h2>
 
   <article class="project">
-    <div class="media">
-      <!-- Replace this line with: <video src="videos/contact.mp4" autoplay muted loop playsinline></video> -->
-      Video coming soon
+    <div class="media-group">
+      <figure class="media">
+        <div class="frame" style="aspect-ratio:1100/850"><video src="videos/lifting-friction.mp4" autoplay muted loop playsinline></video></div>
+        <figcaption>Our bristle model lifting the block using friction alone — no virtual wall.</figcaption>
+      </figure>
+      <figure class="media">
+        <div class="frame" style="aspect-ratio:1100/366"><video src="videos/jamming.mp4" autoplay muted loop playsinline></video></div>
+        <figcaption>Pushed into the shelf, the bristle model jams and holds under 100,000&nbsp;N; MuJoCo's arm slips the box straight through.</figcaption>
+      </figure>
+      <figure class="media">
+        <div class="frame" style="aspect-ratio:1536/640"><video src="videos/grasp-comparison.mp4" autoplay muted loop playsinline></video></div>
+        <figcaption>Bristle model (μ=0.75, left) vs MuJoCo's pyramidal friction cone (μ=0.75, right) on the same grasp.</figcaption>
+      </figure>
     </div>
     <h3>Contact models and robot learning</h3>
-    <p>I benchmarked our LCP-based bristle-friction models against MuJoCo on grasping and non-prehensile manipulation. Relaxed complementarity in convex models doesn’t capture stick-slip transitions or true sticking. A published sim-to-real benchmark had to add a virtual wall to make one task trainable; our model reproduces it with friction alone.</p>
-    <span class="venue">RoboSim 2026 · IROS 2026 Workshop on Contact &amp; Learning</span>
+    <p class="thesis">If a simulator can't reproduce a contact behavior, a robot trained in it can't learn to rely on that behavior either. I traced three cases where MuJoCo's contact model breaks down to a specific modelling choice, not to the RL on top of it.</p>
+    <div class="findings">
+      <p><b>Lifting with friction alone.</b> <a href="https://www.merl.com/publications/TR2025-169" target="_blank" rel="noopener">Shirai et al., NeurIPS 2025 workshop</a> found that raising the friction coefficient wasn't enough to reproduce a friction-only lift in simulation, and added a virtual wall behind the object to make the task trainable. Our reading: their convex contact model can't represent stick-slip transitions or pure sticking. A bristle friction model lifts the same object with no wall.</p>
+      <p><b>Sustaining a jam under load.</b> Tilt a brick until it wedges, then increase the load: reproducing this in MuJoCo takes heavy parameter tuning, because dropping the complementarity condition makes the normal force follow from a penalty stiffness, and the defaults never reach the value needed to hold the wedge. In our LCP-based model, sticking is a real state — force at zero slip velocity — so the wedge survives up to 100,000&nbsp;N.</p>
+      <p><b>Recovering a grasp after partial release.</b> Grasp an object, partly release it so it slips, then recover the grasp. Velocity-level formulations need heavy tuning here too: without an elastic state, exact sticking is never attained, some slip always persists, and the grasp is never quite recovered. In the bristle model, friction force is non-zero at zero slip velocity, so the grasp recovers cleanly.</p>
+    </div>
+    <p class="thesis">Same pattern each time: the gap wasn't in the policy, it was in what the simulator could represent in the first place.</p>
+    <span class="venue">RoboSim 2026 · <a href="https://openreview.net/forum?id=K8gtLWH8hR" target="_blank" rel="noopener">IROS 2026 Workshop on Contact &amp; Learning</a></span>
   </article>
 
   <article class="project">
-    <div class="media">
-      <!-- <video src="videos/point-mass.mp4" autoplay muted loop playsinline></video> -->
-      Video coming soon
+    <div class="media-group">
+      <figure class="media">
+        <div class="frame" style="aspect-ratio:1600/800"><video src="videos/point-mass.mp4" autoplay muted loop playsinline></video></div>
+        <figcaption>Rendered arm (left) and its point-mass schematic (right), same motion.</figcaption>
+      </figure>
     </div>
-    <h3>Rigid bodies as four point masses</h3>
-    <p>Each link is modelled by four point masses. The mass matrix becomes constant, the nonlinear inertial terms disappear, and constraint Jacobians are linear in the generalized coordinates. For differentiable physics, the expensive terms vanish or can be precomputed: ∂M/∂q = 0, ∂c/∂q = 0, and constant Hessians for the constraint Jacobians.</p>
-    <span class="venue">ASME J. Applied Mechanics 2025 · Mechanism and Machine Theory 2024, 2025</span>
+    <h3>A point-mass representation for rigid-body dynamics</h3>
+    <p>Every rigid body can be represented as a small system of point masses instead of the usual inertia tensor. The mass matrix comes out constant, the nonlinear inertial terms disappear, and the constraint Jacobians are linear in the generalized coordinates. That matters for differentiable physics in particular: the terms that are normally expensive to differentiate through a physics engine either vanish or can be precomputed once, instead of on every step.</p>
+    <span class="venue">RoboSim 2026</span>
   </article>
 
   <article class="project">
-    <div class="media">
-      <!-- <video src="videos/coriolis.mp4" autoplay muted loop playsinline></video> -->
-      Video coming soon
+    <div class="media-group">
+      <figure class="media"><div class="frame" style="aspect-ratio:16/9;display:grid;place-items:center">Video coming soon</div>
+        <figcaption>Building demolition, simulated as clusters of constrained particles in Vortex Studio.</figcaption>
+      </figure>
+      <figure class="media"><div class="frame" style="aspect-ratio:16/9;display:grid;place-items:center">Video coming soon</div>
+        <figcaption>Joint modelled in MATLAB (revolute), before porting it to C++.</figcaption>
+      </figure>
+      <figure class="media"><div class="frame" style="aspect-ratio:16/9;display:grid;place-items:center">Video coming soon</div>
+        <figcaption>Same approach for a prismatic joint.</figcaption>
+      </figure>
+      <figure class="media"><div class="frame" style="aspect-ratio:16/9;display:grid;place-items:center">Video coming soon</div>
+        <figcaption>Bodies buried in soil in Vortex Studio — soil and bodies modelled in the same particle framework.</figcaption>
+      </figure>
     </div>
-    <h3>A new way to compute the Coriolis/centrifugal matrix</h3>
-    <p>A method for computing the Coriolis/centrifugal matrix of open- and closed-loop manipulators.</p>
-    <span class="venue">IEEE Robotics and Automation Letters, 2026</span>
+    <h3>Particle-based simulation of rigid bodies and joints</h3>
+    <p>At CM Labs Simulations I implement and validate this in C++ inside <a href="https://www.cm-labs.com/en/vortex-studio/" target="_blank" rel="noopener">Vortex Studio</a>, their production physics engine. It builds on the <a href="https://doi.org/10.2312/vriphys.20141232" target="_blank" rel="noopener">Parallel Particles (P²) method</a> (Holz, VRIPHYS 2014), originally designed for soil simulation and built for fast, parallel contact detection between free particles. I hold particles together with constant-distance constraints to form rigid bodies — the original method only has loose particles — so a structure like a building can be modelled as clusters of constrained particles while keeping the method's fast contact detection, which is what makes large-scale demolition and fragmentation tractable. Because soil and bodies live in the same particle framework, the same approach also handles bodies buried in soil.</p>
+    <p>I'm extending the same approach to multibody systems with joints — revolute and prismatic so far — validated first in MATLAB before anything goes into C++.</p>
+    <span class="venue">CM Labs Simulations · Vortex Studio</span>
   </article>
-</section>
-
-<section id="publications">
-  <h2>Journal papers</h2>
-  <ul class="pubs">
-    <li><span class="t">A New Approach for the Computation of the Coriolis/Centrifugal Matrix</span>
-      <span class="a"><b>D. M. Solanillas Francés</b>, J. Kövecses</span><br>
-      <span class="v"><i>IEEE Robotics and Automation Letters</i> 11(10), 2026</span></li>
-    <li><span class="t">Dynamics Representation of Mechanical Systems for Time-Stepping Problems</span>
-      <span class="a"><b>D. M. Solanillas Francés</b>, J. Kövecses</span><br>
-      <span class="v"><i>Mechanism and Machine Theory</i> 218, 2025</span></li>
-    <li><span class="t">A New Representation for the Dynamics of Rigid Bodies</span>
-      <span class="a"><b>D. M. Solanillas Francés</b>, J. Kövecses</span><br>
-      <span class="v"><i>ASME Journal of Applied Mechanics</i> 92(7), 2025</span></li>
-    <li><span class="t">A New Formulation for the Dynamics of Rigid Bodies with Unilateral Interactions</span>
-      <span class="a"><b>D. M. Solanillas Francés</b>, J. Kövecses</span><br>
-      <span class="v"><i>Mechanism and Machine Theory</i> 203, 2024</span></li>
-    <li><span class="t">Path Analysis for Hybrid Rigid-Flexible Mechanisms</span>
-      <span class="a">O. Altuzarra, <b>D. M. Solanillas</b>, E. Amezua, V. Petuya</span><br>
-      <span class="v"><i>Mathematics</i> 9(16), 2021</span></li>
-  </ul>
 </section>
 
 <section id="experience">
@@ -244,7 +285,7 @@ footer .actions{margin-top:14px}
   <ol class="tl" reversed>
     <li class="now"><span class="yr">2025 – now</span>
       <h3>Research collaboration, CM Labs Simulations (Vortex Studio)</h3>
-      <p>Implemented and validated position-based dynamics algorithms in C++ inside the Vortex production codebase.</p></li>
+      <p>Implemented and validated position-based dynamics algorithms in C++ inside the Vortex Studio production codebase.</p></li>
     <li class="now"><span class="yr">2021 – now</span>
       <h3>PhD researcher, Applied Dynamics Lab, McGill</h3>
       <p>Supervised by Prof. József Kövecses. Dynamic formulations and time-stepping schemes for multibody systems with contact and friction, applied to robotic manipulators.</p></li>
@@ -257,26 +298,47 @@ footer .actions{margin-top:14px}
   </ol>
 </section>
 
+<section id="publications">
+  <h2>Journal papers</h2>
+  <ul class="pubs">
+    <li><span class="t">A New Approach for the Computation of the Coriolis/Centrifugal Matrix</span>
+      <span class="a"><b>D. M. Solanillas Francés</b>, J. Kövecses</span><br>
+      <span class="v"><i>IEEE Robotics and Automation Letters</i> 11(10), 2026 · <a href="https://ieeexplore.ieee.org/author/37394714400" target="_blank" rel="noopener">IEEE Xplore</a></span></li>
+    <li><span class="t">Dynamics Representation of Mechanical Systems for Time-Stepping Problems</span>
+      <span class="a"><b>D. M. Solanillas Francés</b>, J. Kövecses</span><br>
+      <span class="v"><i>Mechanism and Machine Theory</i> 218, 2025 · <a href="https://doi.org/10.1016/j.mechmachtheory.2025.106292" target="_blank" rel="noopener">DOI</a></span></li>
+    <li><span class="t">A New Representation for the Dynamics of Rigid Bodies</span>
+      <span class="a"><b>D. M. Solanillas Francés</b>, J. Kövecses</span><br>
+      <span class="v"><i>ASME Journal of Applied Mechanics</i> 92(7), 2025 · <a href="https://doi.org/10.1115/1.4068251" target="_blank" rel="noopener">DOI</a></span></li>
+    <li><span class="t">A New Formulation for the Dynamics of Rigid Bodies with Unilateral Interactions</span>
+      <span class="a"><b>D. M. Solanillas Francés</b>, J. Kövecses</span><br>
+      <span class="v"><i>Mechanism and Machine Theory</i> 203, 2024 · <a href="https://doi.org/10.1016/j.mechmachtheory.2024.105809" target="_blank" rel="noopener">DOI</a></span></li>
+    <li><span class="t">Path Analysis for Hybrid Rigid-Flexible Mechanisms</span>
+      <span class="a">O. Altuzarra, <b>D. M. Solanillas</b>, E. Amezua, V. Petuya</span><br>
+      <span class="v"><i>Mathematics</i> 9(16), 2021 · <a href="https://doi.org/10.3390/math9161869" target="_blank" rel="noopener">DOI</a></span></li>
+  </ul>
+</section>
+
 <section id="talks">
   <h2>Talks and posters</h2>
   <ul class="talks">
-    <li><span class="d up">Oct 2026</span><span>Workshop on Contact &amp; Learning, IROS, Pittsburgh (poster)</span></li>
-    <li><span class="d up">Oct 2026</span><span>Asian Conference on Multibody Dynamics, Okinawa</span></li>
-    <li><span class="d">Sep 2026</span><span>RoboSim Summit, London</span></li>
-    <li><span class="d">Jul 2026</span><span>WCCM–ECCOMAS Congress, Munich</span></li>
-    <li><span class="d">Jun 2026</span><span>Int. Conference on Multibody System Dynamics, Seville</span></li>
+    <li><span class="d up">Oct 2026</span><div><span class="t">Contact Modelling Still Matters for Learning-Based Manipulation</span><span class="v">Workshop on Contact &amp; Learning, IROS, Pittsburgh (poster)</span></div></li>
+    <li><span class="d up">Oct 2026</span><div><span class="t">A Novel Dynamics Formulation for Articulated Mechanical Systems with Unilateral Contacts</span><span class="v">Asian Conference on Multibody Dynamics, Okinawa</span></div></li>
+    <li><span class="d">Sep 2026</span><div><span class="t">Accurate Contact and Friction Modelling: Importance in Robotic Simulation</span><span class="v">RoboSim Summit, London</span></div></li>
+    <li><span class="d">Jul 2026</span><div><span class="t">Particle-Based Simulation of Rigid Bodies for Real-Time Applications</span><span class="v">WCCM–ECCOMAS Congress, Munich</span></div></li>
+    <li><span class="d">Jun 2026</span><div><span class="t">A Two-Stage Dynamics-Kinematics Representation for Unilateral Contact in Multibody Systems</span><span class="v">Int. Conference on Multibody System Dynamics, Seville</span></div></li>
   </ul>
   <details>
     <summary>Show 8 earlier talks</summary>
     <ul class="talks">
-      <li><span class="d">Apr 2026</span><span>Contact Mechanics International Symposium, Lugano (poster)</span></li>
-      <li><span class="d">Oct 2025</span><span>ECCOMAS Particles, Barcelona</span></li>
-      <li><span class="d">Jul 2025</span><span>ECCOMAS Multibody, Innsbruck</span></li>
-      <li><span class="d">Jul 2025</span><span>ECCOMAS Computational Contact Mechanics, Munich</span></li>
-      <li><span class="d">Aug 2024</span><span>ASME IDETC/CIE, Washington DC</span></li>
-      <li><span class="d">Jul 2024</span><span>European Nonlinear Dynamics Conference, Delft</span></li>
-      <li><span class="d">Jun 2024</span><span>Mechanism and Machine Theory Symposium, Guimarães</span></li>
-      <li><span class="d">Jun 2024</span><span>Int. Conference on Multibody System Dynamics, Madison</span></li>
+      <li><span class="d">Apr 2026</span><div><span class="t">A Novel Dynamics Representation for Unilateral Contact Problems</span><span class="v">Contact Mechanics International Symposium, Lugano (poster)</span></div></li>
+      <li><span class="d">Oct 2025</span><div><span class="t">Fragmentation and Demolition Simulation Using Particle Systems</span><span class="v">ECCOMAS Particles, Barcelona</span></div></li>
+      <li><span class="d">Jul 2025</span><div><span class="t">A Novel Time-Stepping Approach for Mechanical Systems</span><span class="v">ECCOMAS Multibody, Innsbruck</span></div></li>
+      <li><span class="d">Jul 2025</span><div><span class="t">Eulerian-Based Rigid Body Dynamics: A New Perspective</span><span class="v">ECCOMAS Computational Contact Mechanics, Munich</span></div></li>
+      <li><span class="d">Aug 2024</span><div><span class="t">Point Mass Based Formulation for Unilateral Contact Problems</span><span class="v">ASME IDETC/CIE, Washington DC</span></div></li>
+      <li><span class="d">Jul 2024</span><div><span class="t">A Novel Approach for Mechanical Systems with Unilateral Interactions</span><span class="v">European Nonlinear Dynamics Conference, Delft</span></div></li>
+      <li><span class="d">Jun 2024</span><div><span class="t">Alternative Formulation for Modelling Rigid Bodies in Unilateral Interaction Problems</span><span class="v">Mechanism and Machine Theory Symposium, Guimarães</span></div></li>
+      <li><span class="d">Jun 2024</span><div><span class="t">A Novel Formulation for Multibody Systems with Unilateral Interactions Using Equimomental Systems of Point Masses</span><span class="v">Int. Conference on Multibody System Dynamics, Madison</span></div></li>
     </ul>
   </details>
 </section>
@@ -285,7 +347,7 @@ footer .actions{margin-top:14px}
   <h2>Skills and background</h2>
   <div class="facts">
     <div>
-      <div class="skill"><b>C++</b><span>Position-based dynamics for CM Labs’ Vortex engine</span></div>
+      <div class="skill"><b>C++</b><span>Position-based dynamics for CM Labs’ Vortex Studio engine</span></div>
       <div class="skill"><b>Python</b><span>MuJoCo benchmarking and contact-fidelity analysis</span></div>
       <div class="skill"><b>MATLAB</b><span>Formulations and time-stepping schemes behind all my papers</span></div>
       <div class="skill"><b>CUDA</b><span>NVIDIA DLI, Fundamentals of Accelerated Computing (2022)</span></div>
@@ -295,8 +357,8 @@ footer .actions{margin-top:14px}
       <h3>Education</h3>
       <ul>
         <li>PhD Mechanical Engineering, McGill University, 2021 – now</li>
-        <li>MSc Mechanical Engineering, University of the Basque Country, 2020. Ranked 1st of 14.</li>
-        <li>BSc Mechanical Engineering, University of Zaragoza, 2018. Ranked 7th of 124, finished in 4 years against a 5.7-year average.</li>
+        <li>MSc Mechanical Engineering, University of the Basque Country, 2020.</li>
+        <li>BSc Mechanical Engineering, University of Zaragoza, 2018.</li>
       </ul>
       <h3 style="margin-top:20px">Awards</h3>
       <ul>
@@ -311,7 +373,7 @@ footer .actions{margin-top:14px}
 </main>
 
 <footer>
-  Let’s talk about contact, simulation or sim-to-real.
+  Let’s talk about contact, simulation, sim-to-real or physical AI.
   <div class="actions">
     <a class="btn primary" href="mailto:david.solanillas@mail.mcgill.ca">david.solanillas@mail.mcgill.ca</a>
     <a class="btn" href="cv.pdf" download>Download CV</a>
