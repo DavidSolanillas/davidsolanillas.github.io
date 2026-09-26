@@ -91,10 +91,7 @@ h1{
 .btn.primary{background:var(--contact);border-color:var(--contact);color:var(--on-contact)}
 .btn.primary:hover{color:var(--on-contact);filter:brightness(1.08)}
 .btn:hover{border-color:var(--contact)}
-.hero-photo{
-  width:120px;height:120px;margin:22px 0 0;border-radius:50%;object-fit:cover;
-  border:2px solid var(--line);background:var(--ink-2)
-}
+.hero-photo{width:120px;height:120px;margin:22px 0 0;border-radius:50%}
 .sim-note{margin:22px 0 0;max-width:40ch;font-size:13.5px;line-height:1.45;color:var(--muted)}
 .sim-note b{color:var(--contact-text);font-weight:600}
 
@@ -199,7 +196,7 @@ footer .actions{margin-top:14px}
   :root{--maxw:1042px}
   body{font-size:18px}
   .hero-text{padding-top:84px}
-  .hero-photo{width:260px;height:auto;aspect-ratio:643/800;margin-top:28px;border-radius:10px;border-width:1px}
+  .hero-photo{width:240px;height:240px;margin-top:28px}
   h1{font-size:clamp(72px,6.5vw,96px)}
   .role{font-size:26px;max-width:32ch}
   .iros .wrap{display:grid;grid-template-columns:1fr auto;gap:12px 48px;align-items:center;padding:34px 22px}
@@ -219,6 +216,11 @@ footer .actions{margin-top:14px}
   footer{padding-top:48px}
 }
 
+/* Wide desktop: full portrait instead of the round crop */
+@media (min-width:1200px){
+  .hero-photo{width:260px;height:auto;aspect-ratio:643/797;border-radius:10px;border:1px solid var(--line)}
+}
+
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 </style>
 </head>
@@ -229,8 +231,8 @@ footer .actions{margin-top:14px}
   <div class="hero-text">
     <h1>David Solanillas</h1>
     <picture>
-      <source media="(max-width:999px)" srcset="photo-face.webp" width="360" height="360">
-      <img class="hero-photo" src="photo.webp" width="643" height="800" alt="Portrait of David Solanillas">
+      <source media="(min-width:1200px)" srcset="photo.webp" width="643" height="797">
+      <img class="hero-photo" src="photo-round.webp" width="560" height="560" alt="Portrait of David Solanillas">
     </picture>
     <p class="role">I model contact and friction so that robots learn accurate physics in simulation.
       <small>Final-year PhD, Applied Dynamics Lab, McGill University</small></p>
