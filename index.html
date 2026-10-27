@@ -105,17 +105,8 @@ section{padding-top:64px}
 h2{margin:0 0 20px;font-size:30px;line-height:1.1;font-weight:700;font-variation-settings:"wdth" 112;letter-spacing:-.01em}
 h3{margin:0 0 6px;font-size:20px;line-height:1.25;font-weight:650;font-variation-settings:"wdth" 100}
 p{margin:0 0 14px;max-width:720px}
-main p,.iros p{text-align:justify;-webkit-hyphens:auto;hyphens:auto}
+main p{text-align:justify;-webkit-hyphens:auto;hyphens:auto}
 .muted{color:var(--muted)}
-
-/* IROS strip — the one thing a recruiter needs first */
-.iros{
-  margin-top:-1px;border-top:3px solid var(--contact);background:var(--ink-2);
-}
-.iros .wrap{max-width:var(--maxw);margin:0 auto;padding:26px 22px 28px}
-.iros h2{font-size:24px;margin-bottom:10px}
-.iros p{color:var(--text-2)}
-.iros .when{color:var(--contact-text);font-weight:600}
 
 /* Research */
 .project{padding:26px 0;border-top:1px solid var(--line)}
@@ -141,7 +132,6 @@ main p,.iros p{text-align:justify;-webkit-hyphens:auto;hyphens:auto}
 .venue{display:inline-block;margin-top:4px;font-size:14px;color:var(--contact-text);font-weight:600}
 .venue a{color:inherit;text-decoration-color:currentColor}
 .venue a:hover{opacity:.8}
-.iros p a{color:var(--paper);text-decoration-color:var(--contact)}
 .thesis{font-size:16.5px;color:var(--text-3)}
 .findings{margin:4px 0 14px}
 .findings p{margin:0 0 14px;font-size:15.5px}
@@ -199,10 +189,6 @@ footer .actions{margin-top:14px}
   .hero-photo{width:240px;height:240px;margin-top:28px}
   h1{font-size:clamp(72px,6.5vw,96px)}
   .role{font-size:26px;max-width:32ch}
-  .iros .wrap{display:grid;grid-template-columns:1fr auto;gap:12px 48px;align-items:center;padding:34px 22px}
-  .iros h2{grid-column:1/-1;margin:0}
-  .iros p{margin:0}
-  .iros .actions{margin:0}
   section{display:grid;grid-template-columns:230px minmax(0,720px);gap:0 48px;padding-top:88px}
   section>h2{grid-column:1;grid-row:1/span 30;position:sticky;top:28px;align-self:start;font-size:28px}
   section>:not(h2){grid-column:2}
@@ -247,27 +233,33 @@ footer .actions{margin-top:14px}
   </div>
 </header>
 
-<div class="iros" id="iros">
-  <div class="wrap">
-    <h2>Meeting me at IROS 2026?</h2>
-    <p><span class="when">Pittsburgh, Sep 27 – Oct 1.</span> I’m presenting the poster <a href="https://openreview.net/forum?id=K8gtLWH8hR" target="_blank" rel="noopener"><i>Contact Modelling Still Matters for Learning-Based Manipulation</i></a> at the <a href="https://sites.google.com/view/contact-and-learning/home" target="_blank" rel="noopener">Workshop on Contact &amp; Learning</a>. I’m finishing my PhD and open to research and engineering roles in robot simulation, physics engines, sim-to-real and physical AI.</p>
-    <div class="actions">
-      <a class="btn primary" href="cv.pdf" download>Download CV</a>
-      <a class="btn" href="mailto:david.solanillas@mail.mcgill.ca?subject=Met%20at%20IROS%202026">Email me</a>
-    </div>
-  </div>
-</div>
-
 <main>
 
 <section id="about">
   <h2>About</h2>
   <p>I work on multibody systems with unilateral contact and friction, applied to robotics. I have four first-author journal papers (IEEE RA-L, Mechanism and Machine Theory, ASME Journal of Applied Mechanics), and I’ve implemented and validated position-based dynamics algorithms in C++ inside CM Labs’ Vortex Studio, a commercial simulation engine.</p>
   <p>I’m currently studying how the fidelity of the contact model limits what robot policies can learn in simulation.</p>
+  <p>I’m finishing my PhD and open to research and engineering roles in robot simulation, physics engines, sim-to-real and physical AI.</p>
 </section>
 
 <section id="research">
   <h2>Research</h2>
+
+  <article class="project">
+    <h3>New point-mass representation for articulated rigid mechanical systems with contact</h3>
+    <div class="media-group">
+      <figure class="media">
+        <div class="frame" style="aspect-ratio:1600/800"><video src="videos/point-mass.mp4" autoplay muted loop playsinline></video></div>
+        <figcaption>Rendered arm (left) and its point-mass schematic (right), same motion.</figcaption>
+      </figure>
+      <figure class="media">
+        <div class="frame" style="aspect-ratio:3400/1700"><video src="videos/stewartContact.mp4" autoplay muted loop playsinline preload="metadata"></video></div>
+        <figcaption>Stewart platform carrying a box in contact with the top plate: rendered (left) and its point-mass schematic (right).</figcaption>
+      </figure>
+    </div>
+    <p>Every rigid body can be represented as a system of four point masses instead of the usual inertia tensor. The mass matrix comes out constant, the nonlinear inertial terms disappear, and the constraint Jacobians become linear in the generalized coordinates. That is especially interesting for <b>differentiable physics</b>: the terms that are normally expensive to differentiate through a physics engine either vanish or can be precomputed once, instead of on every step.</p>
+    <span class="venue">RoboSim 2026</span>
+  </article>
 
   <article class="project">
     <h3>Contact models and robot learning</h3>
@@ -293,18 +285,6 @@ footer .actions{margin-top:14px}
     </div>
     <!-- <p class="thesis">Same pattern each time: the gap wasn't in the policy, it was in what the simulator could represent in the first place.</p> -->
     <span class="venue">RoboSim 2026 · <a href="https://sites.google.com/view/contact-and-learning/home" target="_blank" rel="noopener">IROS 2026 Workshop on Contact &amp; Learning</a></span>
-  </article>
-
-  <article class="project">
-    <h3>A point-mass representation for rigid-body dynamics</h3>
-    <div class="media-group">
-      <figure class="media">
-        <div class="frame" style="aspect-ratio:1600/800"><video src="videos/point-mass.mp4" autoplay muted loop playsinline></video></div>
-        <figcaption>Rendered arm (left) and its point-mass schematic (right), same motion.</figcaption>
-      </figure>
-    </div>
-    <p>Every rigid body can be represented as a system of four point masses instead of the usual inertia tensor. The mass matrix comes out constant, the nonlinear inertial terms disappear, and the constraint Jacobians become linear in the generalized coordinates. That is especially interesting for differentiable physics: the terms that are normally expensive to differentiate through a physics engine either vanish or can be precomputed once, instead of on every step.</p>
-    <span class="venue">RoboSim 2026</span>
   </article>
 
   <article class="project">
@@ -379,8 +359,8 @@ footer .actions{margin-top:14px}
 <section id="talks">
   <h2>Talks and posters</h2>
   <ul class="talks">
-    <li><span class="d up">Oct 2026</span><div><span class="t">Contact Modelling Still Matters for Learning-Based Manipulation</span><span class="v">Workshop on Contact &amp; Learning, IROS, Pittsburgh (poster)</span></div></li>
-    <li><span class="d up">Oct 2026</span><div><span class="t">A Novel Dynamics Formulation for Articulated Mechanical Systems with Unilateral Contacts</span><span class="v">Asian Conference on Multibody Dynamics, Okinawa</span></div></li>
+    <li><span class="d">Oct 2026</span><div><span class="t">Contact Modelling Still Matters for Learning-Based Manipulation</span><span class="v">Workshop on Contact &amp; Learning, IROS, Pittsburgh (poster)</span></div></li>
+    <li><span class="d">Oct 2026</span><div><span class="t">A Novel Dynamics Formulation for Articulated Mechanical Systems with Unilateral Contacts</span><span class="v">Asian Conference on Multibody Dynamics, Okinawa</span></div></li>
     <li><span class="d">Sep 2026</span><div><span class="t">Accurate Contact and Friction Modelling: Importance in Robotic Simulation</span><span class="v">RoboSim Summit, London</span></div></li>
     <li><span class="d">Jul 2026</span><div><span class="t">Particle-Based Simulation of Rigid Bodies for Real-Time Applications</span><span class="v">WCCM–ECCOMAS Congress, Munich</span></div></li>
     <li><span class="d">Jun 2026</span><div><span class="t">A Two-Stage Dynamics-Kinematics Representation for Unilateral Contact in Multibody Systems</span><span class="v">Int. Conference on Multibody System Dynamics, Seville</span></div></li>
