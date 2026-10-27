@@ -238,7 +238,7 @@ footer .actions{margin-top:14px}
 <section id="about">
   <h2>About</h2>
   <p>I work on multibody systems with unilateral contact and friction, applied to robotics. I have four first-author journal papers (IEEE RA-L, Mechanism and Machine Theory, ASME Journal of Applied Mechanics), and I’ve implemented and validated position-based dynamics algorithms in C++ inside CM Labs’ Vortex Studio, a commercial simulation engine.</p>
-  <p>I’m currently studying how the fidelity of the contact model limits what robot policies can learn in simulation.</p>
+  <p>I’m currently studying how the fidelity of the contact model limits what robot policies can learn in simulation. I’m also developing a new point-mass formulation for the dynamics of mechanical systems with contact, which I think is very promising for differentiable physics.</p>
   <p>I’m finishing my PhD and open to research and engineering roles in robot simulation, physics engines, sim-to-real and physical AI.</p>
 </section>
 
@@ -249,15 +249,15 @@ footer .actions{margin-top:14px}
     <h3>New point-mass representation for articulated rigid mechanical systems with contact</h3>
     <div class="media-group">
       <figure class="media">
-        <div class="frame" style="aspect-ratio:1600/800"><video src="videos/point-mass.mp4" autoplay muted loop playsinline></video></div>
-        <figcaption>Rendered arm (left) and its point-mass schematic (right), same motion.</figcaption>
-      </figure>
-      <figure class="media">
         <div class="frame" style="aspect-ratio:3400/1700"><video src="videos/stewartContact.mp4" autoplay muted loop playsinline preload="metadata"></video></div>
         <figcaption>Stewart platform carrying a box in contact with the top plate: rendered (left) and its point-mass schematic (right).</figcaption>
       </figure>
+      <figure class="media">
+        <div class="frame" style="aspect-ratio:1600/800"><video src="videos/point-mass.mp4" autoplay muted loop playsinline></video></div>
+        <figcaption>Rendered arm (left) and its point-mass schematic (right), same motion.</figcaption>
+      </figure>
     </div>
-    <p>Every rigid body can be represented as a system of four point masses instead of the usual inertia tensor. The mass matrix comes out constant, the nonlinear inertial terms disappear, and the constraint Jacobians become linear in the generalized coordinates. That is especially interesting for <b>differentiable physics</b>: the terms that are normally expensive to differentiate through a physics engine either vanish or can be precomputed once, instead of on every step.</p>
+    <p>Each rigid body is modelled as an equimomental system of four point masses, which has the same mass, center of mass and inertia tensor as the body. The positions of the point masses are used as generalized coordinates. With these coordinates, the mass matrix is constant and the nonlinear inertial terms vanish, which leads to more stable simulations. The constraint and contact Jacobians are at most linear in the generalized coordinates, so their Hessians are constant. That makes the representation especially interesting for <b>differentiable physics</b>, as the derivatives that are normally the most expensive to compute have a closed form. I’m currently investigating this application.</p>
     <span class="venue">RoboSim 2026</span>
   </article>
 
